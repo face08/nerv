@@ -1,3 +1,5 @@
+
+// 定义接口
 export interface Widget {
   vtype: VType
   name: string
@@ -85,6 +87,7 @@ export interface Props {
   [k: string]: any
 }
 
+// 生命周期
 export interface ComponentLifecycle<P, S> {
   componentWillMount? (): void
   componentDidMount? (): void
@@ -112,6 +115,7 @@ export interface Refs {
   [k: string]: any
 }
 
+// 组件
 export interface Component<P, S> extends ComponentLifecycle<P, S> {
   state: Readonly<S>
   props: Readonly<P> & Readonly<any>
@@ -187,11 +191,12 @@ export function noop () {}
 // typescript will compile the enum's value for us.
 // eg.
 // Composite = 1 << 2  => Composite = 4
+
 export const enum VType {
   Text = 1,
-  Node = 1 << 1,
+  Node = 1 << 1, // 2
   Composite = 1 << 2,
   Stateless = 1 << 3,
-  Void = 1 << 4,
+  Void = 1 << 4, // 16
   Portal = 1 << 5
 }
