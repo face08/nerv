@@ -4,6 +4,7 @@ export { SimpleMap, MapClass } from './simple-map'
 export * from './is'
 export { isBrowser, doc } from './env'
 
+// 返回原型对象
 export function getPrototype (obj) {
   /* istanbul ignore next */
   if (Object.getPrototypeOf) {
@@ -15,10 +16,12 @@ export function getPrototype (obj) {
   return obj.constructor.prototype
 }
 
+// 是否事件on
 export function isAttrAnEvent (attr: string): boolean {
   return attr[0] === 'o' && attr[1] === 'n'
 }
 
+// polyfill：Object.assign
 const extend = ((): (<S, F>(source: S, from: F) => S | F & S) => {
   if ('assign' in Object) {
     return <S, F>(source: S, from: F): S | F & S => {

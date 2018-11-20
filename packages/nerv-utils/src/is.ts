@@ -1,5 +1,6 @@
 import { doc } from './env'
 
+// is判断
 export function isNumber (arg): arg is number {
   return typeof arg === 'number'
 }

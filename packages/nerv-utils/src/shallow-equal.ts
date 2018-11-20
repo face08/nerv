@@ -1,5 +1,7 @@
 /* istanbul ignore next */
 // tslint:disable-next-line
+
+// polyfill
 Object.is = Object.is || function (x, y) {
   if (x === y) {
     return x !== 0 || 1 / x === 1 / y
@@ -7,6 +9,7 @@ Object.is = Object.is || function (x, y) {
   return x !== x && y !== y
 }
 
+// 浅对比
 export default function shallowEqual (obj1, obj2) {
   if (obj1 === null || obj2 === null) {
     return false

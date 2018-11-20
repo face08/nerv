@@ -4,6 +4,7 @@ export interface Cache<Key, Value> {
   v: Value
 }
 
+// Map结构
 export class SimpleMap<Key, Value> {
   cache: Array<Cache<Key, Value>>
   size: number
@@ -18,6 +19,7 @@ export class SimpleMap<Key, Value> {
       this.size += 1
       return
     }
+    // 查找是否存在
     for (let i = 0; i < len; i++) {
       const item = this.cache[i]
       if (item.k === k) {

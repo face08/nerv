@@ -8,6 +8,7 @@ if (canUsePromise) {
   resolved = Promise.resolve()
 }
 
+// 下一帧频
 const nextTick: (fn, ...args) => void = (fn, ...args) => {
   fn = isFunction(fn) ? fn.bind(null, ...args) : fn
   if (canUsePromise) {

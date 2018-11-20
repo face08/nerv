@@ -1,5 +1,7 @@
 // tslint:disable-next-line
-export var global = (function() {
+
+// 环境变量
+export let global = (function () {
   let local
 
   if (typeof global !== 'undefined') {
