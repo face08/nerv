@@ -4,6 +4,7 @@ import Ref from './ref'
 import { detachEvent } from '../event'
 import options from '../options'
 
+// 卸载多个
 export function unmountChildren (
   children: VirtualChildren,
   parentDom?: Element
@@ -17,6 +18,7 @@ export function unmountChildren (
   }
 }
 
+// 卸载单个
 export function unmount (vnode, parentDom?) {
   if (isInvalid(vnode)) {
     return
@@ -34,6 +36,7 @@ export function unmount (vnode, parentDom?) {
     unmountChildren(children)
     for (const propName in props) {
       if (isAttrAnEvent(propName)) {
+        // 如果有事件
         detachEvent(dom, propName, props[propName])
       }
     }

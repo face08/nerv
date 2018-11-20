@@ -7,6 +7,7 @@ import {
   EMPTY_OBJ
 } from 'nerv-shared'
 
+// node节点
 function createVNode (
   type: string,
   props: Props,

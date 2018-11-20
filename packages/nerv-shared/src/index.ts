@@ -67,6 +67,7 @@ export interface VNode {
   ref: Function | string | null
 }
 
+// 指定虚拟节点类型
 export type VirtualNode =
   | VNode
   | VText

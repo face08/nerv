@@ -29,4 +29,5 @@ const fakeDoc: any = {
   createTextNode: noop
 }
 
+// 全局文档对象
 export const doc: Document = isBrowser ? document : fakeDoc

@@ -12,6 +12,7 @@ export type IterateFn = (
   array: Array<VirtualChildren | any>
 ) => any
 
+
 export const Children = {
   map (children: Array<VirtualChildren | any>, fn: IterateFn, ctx: any): any[] {
     if (isNullOrUndef(children)) {
@@ -23,6 +24,8 @@ export const Children = {
     }
     return children.map(fn)
   },
+
+  // 循环执行fn函数
   forEach (
     children: Array<VirtualChildren | any>,
     fn: IterateFn,
@@ -45,6 +48,7 @@ export const Children = {
     children = Children.toArray(children)
     return children.length
   },
+  // 1个对象
   only (children: Array<VirtualChildren | any>): VirtualChildren | any {
     children = Children.toArray(children)
     if (children.length !== 1) {
@@ -52,6 +56,7 @@ export const Children = {
     }
     return children[0]
   },
+  // 转为1维数组
   toArray (
     children: Array<VirtualChildren | any>
   ): Array<VirtualChildren | any> {
@@ -69,6 +74,7 @@ export const Children = {
   }
 }
 
+// 多维数组展开
 function flatten (arr, result) {
   for (let i = 0, len = arr.length; i < len; i++) {
     const value = arr[i]

@@ -26,16 +26,21 @@ function createElement (
   if (isValidElement(vnode)) {
     const vtype = vnode.vtype
     if (vtype & (VType.Composite | VType.Stateless)) {
+      // ???
       domNode = (vnode as CompositeComponent).init(parentContext, parentComponent)
       options.afterMount(vnode as CompositeComponent)
     } else if (vtype & VType.Text) {
+      // 创建文本节点
       domNode = doc.createTextNode((vnode as any).text);
       (vnode as any).dom = domNode
     } else if (vtype & VType.Node) {
+      // 创建node节点
       domNode = mountVNode(vnode as any, isSvg, parentContext, parentComponent)
     } else if (vtype & VType.Void) {
+      // 空对象
       domNode = (vnode as any).dom = doc.createTextNode('')
     } else if (isPortal(vtype, vnode)) {
+      // 创建容器
       vnode.type.appendChild(
         createElement(vnode.children, isSvg, parentContext, parentComponent) as Element
       )
@@ -46,6 +51,7 @@ function createElement (
   } else if (isNullOrUndef(vnode) || isBoolean(vnode)) {
     domNode = doc.createTextNode('')
   } else if (isArray(vnode)) {
+    // 创建文档块
     domNode = doc.createDocumentFragment()
     vnode.forEach((child) => {
       if (!isInvalid(child)) {
@@ -61,6 +67,7 @@ function createElement (
   return domNode
 }
 
+// 创建node节点
 export function mountVNode (vnode: VNode, isSvg?: boolean, parentContext?, parentComponent?) {
   if (vnode.isSvg) {
     isSvg = true
@@ -82,6 +89,7 @@ export function mountVNode (vnode: VNode, isSvg?: boolean, parentContext?, paren
     isSvg = false
   }
   const children = vnode.children
+  // 如果是数组
   if (isArray(children)) {
     for (let i = 0, len = children.length; i < len; i++) {
       mountChild(children[i] as VNode, domNode, parentContext, isSvg, parentComponent)
@@ -96,6 +104,7 @@ export function mountVNode (vnode: VNode, isSvg?: boolean, parentContext?, paren
   return domNode
 }
 
+// 添加child节点
 export function mountChild (
   child: VNode,
   domNode: Element,
@@ -110,6 +119,7 @@ export function mountChild (
   }
 }
 
+// 设置props
 function setProps (domNode: Element, vnode: VNode, isSvg: boolean) {
   const props = vnode.props
   for (const p in props) {

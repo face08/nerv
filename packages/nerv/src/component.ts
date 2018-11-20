@@ -15,8 +15,8 @@ class Component<P, S> implements ComponentLifecycle<P, S> {
   context: any
   _dirty = true
   _disable = true
-  _pendingStates: any[] = []
-  _pendingCallbacks: Function[]
+  _pendingStates: any[] = [] // 要改变的states
+  _pendingCallbacks: Function[]// 回调函数
   refs: Refs
 
   // Is a React Component.
@@ -46,7 +46,7 @@ class Component<P, S> implements ComponentLifecycle<P, S> {
       (this._pendingCallbacks = this._pendingCallbacks || []).push(callback)
     }
     if (!this._disable) {
-      enqueueRender(this)
+      enqueueRender(this) // 添加到更新队列
     }
   }
 

@@ -4,6 +4,7 @@ import { extend, clone, isArray, isString } from 'nerv-utils'
 import { isVText, isVNode, EMPTY_CHILDREN, VType, isNullOrUndef, isPortal, isInvalid } from 'nerv-shared'
 import { createVoid } from './vdom/create-void'
 
+// 克隆元素
 export default function cloneElement (vnode, props?: object, ...children): any {
   if (isVText(vnode)) {
     return createVText(vnode.text)
