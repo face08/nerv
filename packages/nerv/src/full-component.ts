@@ -5,6 +5,7 @@ import {
   unmountComponent
 } from './lifecycle'
 
+// 组件包裹类
 class ComponentWrapper implements CompositeComponent {
   vtype = VType.Composite
   type: any

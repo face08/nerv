@@ -4,6 +4,7 @@ const NS = {
   xml: 'http://www.w3.org/XML/1998/namespace'
 }
 
+// 名称转换
 const ATTRS = {
   accentHeight: 'accent-height',
   accumulate: 0,

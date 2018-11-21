@@ -12,6 +12,7 @@ import {
 } from 'nerv-shared'
 import SVGPropertyConfig from './vdom/svg-property-config'
 
+// 转换为html标签名称
 function transformPropsForRealTag (type: string, props: Props) {
   const newProps: Props = {}
   for (const propName in props) {

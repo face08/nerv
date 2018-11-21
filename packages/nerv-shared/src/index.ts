@@ -26,6 +26,7 @@ export interface Portal {
 
 export type ComponentInstance = CompositeComponent | StatelessComponent
 
+// 复合组件
 export interface CompositeComponent extends Widget {
   type: any
   component: Component<any, any>

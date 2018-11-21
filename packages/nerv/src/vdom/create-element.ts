@@ -16,6 +16,7 @@ import options from '../options'
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 
+// 创建dom组件
 function createElement (
   vnode: VirtualNode | VirtualNode[],
   isSvg?: boolean,

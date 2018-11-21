@@ -24,6 +24,7 @@ import Ref from './vdom/ref'
 
 const readyComponents: any[] = []
 
+// catch执行函数
 function errorCatcher (fn: Function, component: Component<any, any>) {
   try {
     return fn()
@@ -32,6 +33,7 @@ function errorCatcher (fn: Function, component: Component<any, any>) {
   }
 }
 
+// 组件错误处理
 function errorHandler (component: Component<any, any>, error) {
   let boundary
 
@@ -49,13 +51,14 @@ function errorHandler (component: Component<any, any>, error) {
   if (boundary) {
     const _disable = boundary._disable
     boundary._disable = false
-    boundary.componentDidCatch(error)
+    boundary.componentDidCatch(error) // 错误处理
     boundary._disable = _disable
   } else {
     throw error
   }
 }
 
+// 确认节点
 function ensureVirtualNode (rendered: any): VText | VVoid | VNode {
   if (isNumber(rendered) || isString(rendered)) {
     return createVText(rendered)
@@ -65,10 +68,12 @@ function ensureVirtualNode (rendered: any): VText | VVoid | VNode {
   return rendered
 }
 
+// 安装节点
 export function mountVNode (vnode, parentContext: any, parentComponent?) {
   return createElement(vnode, false, parentContext, parentComponent)
 }
 
+// 安装组件
 export function mountComponent (
   vnode: FullComponent,
   parentContext: object,
@@ -81,22 +86,32 @@ export function mountComponent (
   if (isComponent(parentComponent)) {
     component._parentComponent = parentComponent
   }
+
+  // 生命周期：安装前
   if (isFunction(component.componentWillMount)) {
     errorCatcher(() => {
       (component as any).componentWillMount()
     }, component)
     component.state = component.getState(true)
   }
+
+  // 渲染
   component._dirty = false
   const rendered = renderComponent(component)
   rendered.parentVNode = vnode
   component._rendered = rendered
+
+  // 生命周期：安装后
   if (isFunction(component.componentDidMount)) {
     readyComponents.push(component)
   }
+
+  // 添加ref
   if (!isNullOrUndef(ref)) {
     Ref.attach(vnode, ref, vnode.dom as Element)
   }
+
+  // 虚拟节点--->dom节点
   const dom = (vnode.dom = mountVNode(
     rendered,
     getChildContext(component, parentContext),
@@ -106,6 +121,7 @@ export function mountComponent (
   return dom
 }
 
+// 安装无state组件？
 export function mountStatelessComponent (vnode: Stateless, parentContext) {
   const rendered = vnode.type(vnode.props, parentContext)
   vnode._rendered = ensureVirtualNode(rendered)
@@ -120,9 +136,12 @@ export function getChildContext (component, context = EMPTY_OBJ) {
   return clone(context)
 }
 
+// 渲染组件
 export function renderComponent (component: Component<any, any>) {
   CurrentOwner.current = component
   let rendered
+
+  // 生命周期：render
   errorCatcher(() => {
     rendered = component.render()
   }, component)

@@ -13,7 +13,7 @@ class Component<P, S> implements ComponentLifecycle<P, S> {
   state: Readonly<S>
   props: Readonly<P> & Readonly<Props>
   context: any
-  _dirty = true
+  _dirty = true // 是否脏数据
   _disable = true
   _pendingStates: any[] = [] // 要改变的states
   _pendingCallbacks: Function[]// 回调函数
@@ -50,6 +50,7 @@ class Component<P, S> implements ComponentLifecycle<P, S> {
     }
   }
 
+  // 获取初始state ？？
   getState (willMount?: boolean) {
     // tslint:disable-next-line:no-this-assignment
     const { _pendingStates, state, props, _pendingCallbacks } = this
