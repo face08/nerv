@@ -1,4 +1,5 @@
 /* tslint:disable: no-empty*/
+
 import {
   isString,
   isAttrAnEvent,
@@ -24,7 +25,6 @@ import { attachEvent, detachEvent } from '../event'
 import SVGPropertyConfig from './svg-property-config'
 import options from '../options'
 
-
 // 单个设置
 export function patch (
   lastVnode,
@@ -35,6 +35,7 @@ export function patch (
 ) {
   const lastDom = lastVnode.dom
   let newDom
+  // 同一节点
   if (isSameVNode(lastVnode, nextVnode)) {
     const vtype = nextVnode.vtype
     if (vtype & VType.Node) {
@@ -65,6 +66,7 @@ export function patch (
     // @TODO: test case
     nextVnode.dom = newDom || lastDom
   } else {
+    // 非同一节点
     unmount(lastVnode)
     newDom = createElement(nextVnode, isSvg, context)
     if (nextVnode !== null) {
@@ -180,6 +182,7 @@ function patchNonKeyedChildren (
 
 /**
  * 按照key值安装
+ * https://github.com/jorgebucaran/hyperapp
  * Virtual DOM patching algorithm based on ivi by
  * Boris Kaul (@localvoid)
  * Licensed under the MIT License
@@ -380,6 +383,7 @@ function patchKeyedChildren (
   }
 }
 
+// 添加新的节点
 function attachNewNode (parentDom, newNode, nextNode) {
   if (isNullOrUndef(nextNode)) {
     parentDom.appendChild(newNode)
@@ -389,6 +393,7 @@ function attachNewNode (parentDom, newNode, nextNode) {
 }
 
 /**
+ * 最长递增子序列(longest increasing subsequence) 问题详解
  * Slightly modified Longest Increased Subsequence algorithm, it ignores items that have -1 value, they're representing
  * new items.
  *
