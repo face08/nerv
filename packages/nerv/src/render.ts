@@ -3,6 +3,7 @@ import { VirtualNode, isComposite } from 'nerv-shared'
 import { patch } from './vdom/patch'
 import options from './options'
 
+// 添加到dom节点
 export function render (
   vnode: VirtualNode,
   container: Element,
@@ -19,7 +20,7 @@ export function render (
     dom = patch(lastVnode, vnode, container, {})
   } else {
     dom = mountVNode(vnode, {})
-    container.appendChild(dom)
+    container.appendChild(dom) //添加到dom节点
   }
 
   if (container) {

@@ -1,7 +1,7 @@
 import { nextTick } from 'nerv-utils'
 import { updateComponent } from './lifecycle'
 
-let items: any[] = [] // 要更新的队列
+let items: any[] = [] // 要更新的队列：组件
 
 // 排队更新
 export function enqueueRender (component) {
@@ -11,7 +11,7 @@ export function enqueueRender (component) {
   }
 }
 
-// 更新函数
+// tick更新函数
 export function rerender () {
   let p
   const list = items

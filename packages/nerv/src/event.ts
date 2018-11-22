@@ -8,7 +8,8 @@ const isiOS =
   !!navigator.platform &&
   /iPad|iPhone|iPod/.test(navigator.platform)
 
-const delegatedEvents = new MapClass()
+// 委托事件
+const delegatedEvents = new MapClass()  // 事件名称：map
 
 const unbubbleEvents = {
   [ONPROPERTYCHANGE]: 1,
@@ -72,6 +73,7 @@ if (isBrowser && navigator.userAgent.indexOf('MSIE 9') >= 0) {
       const index = elements.indexOf(el)
       const element = elements[index] || elements.push(el)
       if (element.value !== values[index]) {
+        //创建自定义事件
         const ev = doc.createEvent('CustomEvent')
         ev.initCustomEvent('input', true, true, undefined)
         values[index] = element.value
@@ -86,6 +88,7 @@ if (typeof Event !== 'undefined' && !Event.prototype.persist) {
   Event.prototype.persist = noop
 }
 
+// 绑定事件
 export function attachEvent (
   domNode: Element,
   eventName: string,
@@ -131,6 +134,7 @@ export function attachEvent (
   }
 }
 
+// 解除事件
 export function detachEvent (
   domNode: Element,
   eventName: string,
@@ -253,6 +257,7 @@ function detectCanUseOnInputNode (node) {
   )
 }
 
+// 兼容事件名称
 function fixEvent (node: Element, eventName: string) {
   if (eventName === 'onDoubleClick') {
     eventName = 'ondblclick'
@@ -276,6 +281,7 @@ function stopPropagation () {
   this.stopImmediatePropagation()
 }
 
+// 逐级发送事件
 function dispatchEvent (event, target, items, count, eventData) {
   const eventsToTrigger = items.get(target)
   if (eventsToTrigger) {
@@ -293,6 +299,7 @@ function dispatchEvent (event, target, items, count, eventData) {
     }
   }
   if (count > 0) {
+    // 获取父节点
     const parentDom = target.parentNode
     if (
       parentDom === null ||
@@ -300,7 +307,7 @@ function dispatchEvent (event, target, items, count, eventData) {
     ) {
       return
     }
-    dispatchEvent(event, parentDom, items, count, eventData)
+    dispatchEvent(event, parentDom, items, count, eventData) // 逐级调用
   }
 }
 
@@ -336,6 +343,12 @@ function attachEventToDocument (d, eventName, delegatedRoots) {
   return eventHandler
 }
 
+/**
+ * 添加事件到node
+ * @param node domNode: Element,
+ * @param eventName  eventName: string,
+ * @param delegatedRoots
+ */
 function attachEventToNode (node, eventName, delegatedRoots) {
   const eventHandler = (event) => {
     const eventToTrigger = delegatedRoots.get(node)

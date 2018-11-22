@@ -126,6 +126,7 @@ export interface Component<P, S> extends ComponentLifecycle<P, S> {
   _disable: boolean
   _rendered: any
   _parentComponent: Component<any, any>
+  // 上次属性记录
   prevProps: P
   prevState: S
   prevContext: object

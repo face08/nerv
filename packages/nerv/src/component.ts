@@ -16,7 +16,7 @@ class Component<P, S> implements ComponentLifecycle<P, S> {
   _dirty = true // 是否脏数据
   _disable = true
   _pendingStates: any[] = [] // 要改变的states
-  _pendingCallbacks: Function[]// 回调函数
+  _pendingCallbacks: Function[]// 改变完后的回调函数
   refs: Refs
 
   // Is a React Component.

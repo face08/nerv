@@ -6,6 +6,7 @@ function getShim () {
   return shim
 }
 
+// prop类型
 const PropTypes = {
   array: shim,
   bool: shim,

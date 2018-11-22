@@ -24,6 +24,8 @@ import { attachEvent, detachEvent } from '../event'
 import SVGPropertyConfig from './svg-property-config'
 import options from '../options'
 
+
+// 单个设置
 export function patch (
   lastVnode,
   nextVnode,
@@ -75,6 +77,7 @@ export function patch (
   return newDom
 }
 
+// 数组设置
 function patchArrayChildren (
   parentDom: Element,
   lastChildren,
@@ -118,6 +121,7 @@ function patchArrayChildren (
   }
 }
 
+// 设置子对象
 export function patchChildren (
   parentDom: Element,
   lastChildren,
@@ -175,7 +179,7 @@ function patchNonKeyedChildren (
 }
 
 /**
- *
+ * 按照key值安装
  * Virtual DOM patching algorithm based on ivi by
  * Boris Kaul (@localvoid)
  * Licensed under the MIT License
@@ -443,6 +447,7 @@ function lis (a: number[]): number[] {
   return result
 }
 
+// 是否设置key值？
 function isKeyed (lastChildren: VNode[], nextChildren: VNode[]): boolean {
   return (
     nextChildren.length > 0 &&
@@ -475,6 +480,7 @@ function patchVText (lastVNode: VText, nextVNode: VText) {
   return dom
 }
 
+// 跳过的属性
 const skipProps = {
   children: 1,
   key: 1,
@@ -484,6 +490,13 @@ const skipProps = {
 
 const IS_NON_DIMENSIONAL = /acit|ex(?:s|g|n|p|$)|rph|ows|mnc|ntw|ine[ch]|zoo|^ord/i
 
+
+/**
+ *  原生style设置样式
+ * @param domStyle 原生css对象
+ * @param style
+ * @param value
+ */
 function setStyle (domStyle, style, value) {
   if (isNullOrUndef(value) || (isNumber(value) && isNaN(value))) {
     domStyle[style] = ''
@@ -498,6 +511,7 @@ function setStyle (domStyle, style, value) {
     !isNumber(value) || IS_NON_DIMENSIONAL.test(style) ? value : value + 'px'
 }
 
+// 添加事件
 function patchEvent (
   eventName: string,
   lastEvent: Function,
@@ -512,8 +526,9 @@ function patchEvent (
   }
 }
 
+// 添加style样式
 function patchStyle (lastAttrValue: CSSStyleSheet, nextAttrValue: CSSStyleSheet, dom: HTMLElement) {
-  const domStyle = dom.style
+  const domStyle = dom.style  // 原生cs属性
   let style
   let value
 
@@ -521,6 +536,7 @@ function patchStyle (lastAttrValue: CSSStyleSheet, nextAttrValue: CSSStyleSheet,
     domStyle.cssText = nextAttrValue
     return
   }
+  // 非字符串
   if (!isNullOrUndef(lastAttrValue) && !isString(lastAttrValue)) {
     for (style in nextAttrValue) {
       value = nextAttrValue[style]
@@ -528,6 +544,7 @@ function patchStyle (lastAttrValue: CSSStyleSheet, nextAttrValue: CSSStyleSheet,
         setStyle(domStyle, style, value)
       }
     }
+    // 清除上次的
     for (style in lastAttrValue) {
       if (isNullOrUndef(nextAttrValue[style])) {
         domStyle[style] = ''
@@ -541,6 +558,7 @@ function patchStyle (lastAttrValue: CSSStyleSheet, nextAttrValue: CSSStyleSheet,
   }
 }
 
+// 设置属性
 export function patchProp (
   domNode: Element,
   prop: string,
@@ -557,7 +575,7 @@ export function patchProp (
     if (skipProps[prop] === 1) {
       return
     } else if (prop === 'class' && !isSvg) {
-      domNode.className = nextValue
+      domNode.className = nextValue  // 设置class
     } else if (prop === 'dangerouslySetInnerHTML') {
       const lastHtml = lastValue && lastValue.__html
       const nextHtml = nextValue && nextValue.__html
@@ -571,26 +589,27 @@ export function patchProp (
             unmountChildren(lastVnode.children)
             lastVnode.children = []
           }
-          domNode.innerHTML = nextHtml
+          domNode.innerHTML = nextHtml  // 设置原始html
         }
       }
     } else if (isAttrAnEvent(prop)) {
-      patchEvent(prop, lastValue, nextValue, domNode)
+      patchEvent(prop, lastValue, nextValue, domNode)  // 事件
     } else if (prop === 'style') {
-      patchStyle(lastValue, nextValue, domNode as HTMLElement)
+      patchStyle(lastValue, nextValue, domNode as HTMLElement) // 设置style
     } else if (
       prop !== 'list' &&
       prop !== 'type' &&
       !isSvg &&
       prop in domNode
     ) {
-      setProperty(domNode, prop, nextValue == null ? '' : nextValue)
+      setProperty(domNode, prop, nextValue == null ? '' : nextValue)  // 设置原始dom属性
       if (nextValue == null || nextValue === false) {
         domNode.removeAttribute(prop)
       }
     } else if (isNullOrUndef(nextValue) || nextValue === false) {
       domNode.removeAttribute(prop)
     } else {
+      // 设置svg属性
       const namespace = SVGPropertyConfig.DOMAttributeNamespaces[prop]
       if (isSvg && namespace) {
         if (nextValue) {
@@ -612,12 +631,14 @@ export function patchProp (
   }
 }
 
+// 设置原始dom属性
 export function setProperty (node, name, value) {
   try {
     node[name] = value
   } catch (e) {}
 }
 
+// 批量添加属性
 function patchProps (
   domNode: Element,
   nextProps: Props,

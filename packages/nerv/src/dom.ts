@@ -6,6 +6,7 @@ import { unmount } from './vdom/unmount'
 import createElement from './create-element'
 import Component from './component'
 
+// 卸载节点
 export function unmountComponentAtNode (dom) {
   const component = dom._component
   if (isValidNervElement(component)) {
@@ -16,6 +17,7 @@ export function unmountComponentAtNode (dom) {
   return false
 }
 
+// 查找？？
 export function findDOMNode (component) {
   if (isInvalid(component)) {
     return null
@@ -26,10 +28,12 @@ export function findDOMNode (component) {
       ? component.dom : component
 }
 
+// 创建工厂函数
 export function createFactory (type) {
   return createElement.bind(null, type)
 }
 
+// 包裹组件
 class WrapperComponent<P, S> extends Component<P, S> {
   getChildContext () {
     // tslint:disable-next-line
@@ -66,4 +70,5 @@ export function isValidElement (element) {
   )
 }
 
+// 更新tick函数
 export const unstable_batchedUpdates = nextTick

@@ -150,6 +150,7 @@ export function renderComponent (component: Component<any, any>) {
   return rendered
 }
 
+// 批量安装
 export function flushMount () {
   if (!readyComponents.length) {
     return
@@ -161,6 +162,7 @@ export function flushMount () {
     if (isFunction(item)) {
       item()
     } else if (item.componentDidMount) {
+      // 生命周期：componentDidMount
       errorCatcher(() => {
         item.componentDidMount()
       }, item)
@@ -168,6 +170,7 @@ export function flushMount () {
   })
 }
 
+// 重新渲染
 export function reRenderComponent (
   prev: CompositeComponent,
   current: CompositeComponent
@@ -176,6 +179,8 @@ export function reRenderComponent (
   const nextProps = current.props
   const nextContext = current.context
   component._disable = true
+
+  // 生命周期：componentWillReceiveProps
   if (isFunction(component.componentWillReceiveProps)) {
     errorCatcher(() => {
       (component as any).componentWillReceiveProps(nextProps, nextContext)
@@ -193,6 +198,7 @@ export function reRenderComponent (
   return updateComponent(component)
 }
 
+// 更新无state组件
 export function reRenderStatelessComponent (
   prev: Stateless,
   current: Stateless,
@@ -206,6 +212,7 @@ export function reRenderStatelessComponent (
   return (current.dom = patch(lastRendered, rendered, lastRendered && lastRendered.dom || domNode, parentContext))
 }
 
+// tick：更新组件
 export function updateComponent (component, isForce = false) {
   let vnode = component.vnode
   let dom = vnode.dom
@@ -219,12 +226,14 @@ export function updateComponent (component, isForce = false) {
   component.context = prevContext
   let skip = false
   if (
+    // 生命周期：shouldComponentUpdate
     !isForce &&
     isFunction(component.shouldComponentUpdate) &&
     component.shouldComponentUpdate(props, state, context) === false
   ) {
     skip = true
   } else if (isFunction(component.componentWillUpdate)) {
+    // 生命周期：componentWillUpdate
     errorCatcher(() => {
       component.componentWillUpdate(props, state, context)
     }, component)
@@ -241,6 +250,8 @@ export function updateComponent (component, isForce = false) {
     const parentDom = lastRendered.dom && lastRendered.dom.parentNode
     dom = vnode.dom = patch(lastRendered, rendered, parentDom || null, childContext)
     component._rendered = rendered
+
+    // 生命周期：componentDidUpdate
     if (isFunction(component.componentDidUpdate)) {
       errorCatcher(() => {
         component.componentDidUpdate(prevProps, prevState, context)
@@ -257,15 +268,18 @@ export function updateComponent (component, isForce = false) {
   component.prevContext = component.context
   if (component._pendingCallbacks) {
     while (component._pendingCallbacks.length) {
-      component._pendingCallbacks.pop().call(component)
+      component._pendingCallbacks.pop().call(component) // 处理回调函数
     }
   }
   flushMount()
   return dom
 }
 
+// 卸载
 export function unmountComponent (vnode: FullComponent) {
   const component = vnode.component
+
+  // 生命周期：componentWillUnmount
   if (isFunction(component.componentWillUnmount)) {
     errorCatcher(() => {
       (component as any).componentWillUnmount()
