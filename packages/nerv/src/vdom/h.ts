@@ -11,7 +11,11 @@ import {
 } from 'nerv-shared'
 import { isString, isArray, isNumber } from 'nerv-utils'
 
-// 创建node节点
+/**
+ * 创建node节点
+ */
+
+// 创建node节点：createVNode、createVText、createVoid的综合
 function h (type: string, props: Props, children?: VirtualChildren) {
   let childNodes
   if (props.children) {
@@ -20,7 +24,7 @@ function h (type: string, props: Props, children?: VirtualChildren) {
     }
   }
   if (isArray(children)) {
-    // 如果children是数组
+    // 如果children是数组，添加子组件
     childNodes = []
     addChildren(childNodes, children as any, type)
   } else if (isString(children) || isNumber(children)) {
@@ -28,7 +32,7 @@ function h (type: string, props: Props, children?: VirtualChildren) {
   } else if (!isValidElement(children)) {
     children = EMPTY_CHILDREN
   }
-  // ss
+  // ssshould be a DOM Element
   props.children = childNodes !== undefined ? childNodes : children
   return createVNode(
     type,
@@ -41,7 +45,7 @@ function h (type: string, props: Props, children?: VirtualChildren) {
   ) as VNode
 }
 
-// 递归添加children
+// 递归添加children到childNodes数组
 function addChildren (
   childNodes: VirtualNode[],
   children: VirtualNode | VirtualNode[],

@@ -2,6 +2,7 @@ import { noop, CompositeComponent, StatelessComponent, VirtualNode } from 'nerv-
 
 export type optionsHook = (vnode: CompositeComponent | StatelessComponent) => void
 
+// ???什么作用
 const options: {
   afterMount: optionsHook
   afterUpdate: optionsHook

@@ -8,17 +8,22 @@ import {
 // 组件包裹类
 class ComponentWrapper implements CompositeComponent {
   vtype = VType.Composite
-  type: any
+  type: any //tsx对象
   name: string
   _owner: any
   props: any
-  component: Component<any, any>
+  component: Component<any, any> // tsx对象实例
   context: any
   key: any
   dom: Element | null
   _rendered: any
   ref: Ref
 
+  /**
+   *
+   * @param type tsx对象
+   * @param props  属性
+   */
   constructor (type, props) {
     this.type = type
     this.name = type.name || type.toString().match(/^function\s*([^\s(]+)/)[1]
@@ -33,6 +38,7 @@ class ComponentWrapper implements CompositeComponent {
     this.dom = null
   }
 
+  // 执行组件生命周期
   init (parentContext, parentComponent) {
     return mountComponent(this, parentContext, parentComponent)
   }

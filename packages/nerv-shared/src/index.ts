@@ -122,7 +122,7 @@ export interface Component<P, S> extends ComponentLifecycle<P, S> {
   state: Readonly<S>
   props: Readonly<P> & Readonly<any>
   context: any
-  _dirty: boolean
+  _dirty: boolean // 脏标记
   _disable: boolean
   _rendered: any
   _parentComponent: Component<any, any>
@@ -132,7 +132,7 @@ export interface Component<P, S> extends ComponentLifecycle<P, S> {
   prevContext: object
   isReactComponent: object
   dom: any
-  vnode: CompositeComponent
+  vnode: CompositeComponent // 包装组件引用
   getState (willMount?: boolean): S
   // tslint:disable-next-line:member-ordering
   refs: Refs

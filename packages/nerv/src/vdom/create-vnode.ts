@@ -7,7 +7,16 @@ import {
   EMPTY_OBJ
 } from 'nerv-shared'
 
-// node节点
+/**
+ * 创建node节点
+ * @param type: div
+ * @param props
+ * @param children
+ * @param key
+ * @param namespace
+ * @param owner
+ * @param ref
+ */
 function createVNode (
   type: string,
   props: Props,

@@ -73,14 +73,19 @@ export function mountVNode (vnode, parentContext: any, parentComponent?) {
   return createElement(vnode, false, parentContext, parentComponent)
 }
 
-// 安装组件
+/**
+ * 安装组件：生命周期
+ * @param vnode:  包装组件
+ * @param parentContext
+ * @param parentComponent
+ */
 export function mountComponent (
   vnode: FullComponent,
   parentContext: object,
   parentComponent
 ) {
   const ref = vnode.ref
-  vnode.component = new vnode.type(vnode.props, parentContext)
+  vnode.component = new vnode.type(vnode.props, parentContext) // 实例化tsx
   const component = vnode.component
   component.vnode = vnode
   if (isComponent(parentComponent)) {
@@ -97,7 +102,7 @@ export function mountComponent (
 
   // 渲染
   component._dirty = false
-  const rendered = renderComponent(component)
+  const rendered = renderComponent(component) // VNode 纯obj对象
   rendered.parentVNode = vnode
   component._rendered = rendered
 
@@ -139,7 +144,7 @@ export function getChildContext (component, context = EMPTY_OBJ) {
 // 渲染组件
 export function renderComponent (component: Component<any, any>) {
   CurrentOwner.current = component
-  let rendered
+  let rendered // 纯obj类型VNode
 
   // 生命周期：render
   errorCatcher(() => {

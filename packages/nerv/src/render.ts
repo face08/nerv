@@ -3,7 +3,12 @@ import { VirtualNode, isComposite } from 'nerv-shared'
 import { patch } from './vdom/patch'
 import options from './options'
 
-// 添加到dom节点
+/**
+ * 添加到dom节点
+ * @param vnode ComponentWrapper
+ * @param container
+ * @param callback
+ */
 export function render (
   vnode: VirtualNode,
   container: Element,
@@ -16,9 +21,11 @@ export function render (
   let dom
   options.roots.push(vnode)
   if (lastVnode !== undefined) {
+    // 父节点
     options.roots = options.roots.filter((item) => item !== lastVnode)
     dom = patch(lastVnode, vnode, container, {})
   } else {
+    // 根节点
     dom = mountVNode(vnode, {})
     container.appendChild(dom) //添加到dom节点
   }

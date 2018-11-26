@@ -12,11 +12,16 @@ import {
 } from 'nerv-shared'
 import SVGPropertyConfig from './vdom/svg-property-config'
 
+/**
+ * 包裹组件
+ */
+
 // 转换为html标签名称
 function transformPropsForRealTag (type: string, props: Props) {
   const newProps: Props = {}
   for (const propName in props) {
     const propValue = props[propName]
+    // 如果是默认值
     if (propName === 'defaultValue') {
       newProps.value = props.value || props.defaultValue
       continue
@@ -32,7 +37,7 @@ function transformPropsForRealTag (type: string, props: Props) {
 }
 
 /**
- *
+ *  添加默认props
  * @param props
  * @param defaultProps
  * defaultProps should respect null but ignore undefined
@@ -54,6 +59,12 @@ function transformPropsForComponent (props: Props, defaultProps?: Props) {
   return newProps
 }
 
+/**
+ * 1：创建元素:主入口函数
+ * @param type: div
+ * @param properties: 自定义props
+ * @param _children
+ */
 function createElement<T> (
   type: string | Function | Component<any, any>,
   properties?: T & Props | null,
@@ -68,10 +79,12 @@ function createElement<T> (
     }
   }
   let props
+  // 如果是字符串
   if (isString(type)) {
     props = transformPropsForRealTag(type, properties as Props)
     props.owner = CurrentOwner.current
     return h(type, props, children as any) as VNode
+
   } else if (isFunction(type)) {
     props = transformPropsForComponent(
       properties as any,
@@ -80,6 +93,7 @@ function createElement<T> (
     if (!props.children || props.children === EMPTY_CHILDREN) {
       props.children = children || children === 0 ? children : EMPTY_CHILDREN
     }
+    // 创建不同组件类型
     props.owner = CurrentOwner.current
     return type.prototype && type.prototype.render
       ? new FullComponent(type, props)
